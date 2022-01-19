@@ -2,7 +2,7 @@
   "name": "reddit-test",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://MatthewMyWu.github.io",
+  "homepage": "https://MatthewMyWu.github.io/reddit-test",
   "dependencies": {
     "-": "^0.0.1",
     "@testing-library/jest-dom": "^5.16.1",
