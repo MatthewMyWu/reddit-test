@@ -1,25 +1,49 @@
 import logo from './logo.svg';
 import './App.css';
+import { Component } from 'react';
+import Display from './Display';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentMeme: "https://i.redd.it/zrbzm0zpcic81.jpg",
+      enableButton: false,
+    }
+  }
+
+  componentDidMount() {
+    this.fetchMemes();
+  }
+
+  fetchMemes() {
+    const memes = [];
+    fetch("https://www.reddit.com/r/memes.json")
+    .then(response => response.json())
+    .then(body => {
+      const entries = body.data.children;
+      for (const entry of entries) {
+        if (entry.data.post_hint === "image") {
+          console.log(entry.data.url_overridden_by_dest);
+          memes.push(entry.data.url_overridden_by_dest);
+        }
+      }
+      this.setState({memes: memes, enableButton: true});
+    });
+  }
+
+  changeMeme() {
+    this.setState({enableButton: false});
+    const i = Math.floor(Math.random() * this.state.memes.length);
+    this.setState({currentMeme: this.state.memes[i], enableButton: true});
+  }
+
+  render() {
+    return (
+      <div className="App">
+          <Display source = {this.state.currentMeme} />
+          <button disabled={!this.state.enableButton} onClick={() => this.changeMeme()}>Change Meme</button>
+      </div>
+    );
+  }
 }
-
-export default App;
