@@ -24,7 +24,6 @@ export default class App extends Component {
       const entries = body.data.children;
       for (const entry of entries) {
         if (entry.data.post_hint === "image") {
-          console.log(entry.data.url_overridden_by_dest);
           memes.push(entry.data.url_overridden_by_dest);
         }
       }
